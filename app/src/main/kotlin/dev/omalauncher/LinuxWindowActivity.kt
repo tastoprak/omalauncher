@@ -121,13 +121,13 @@ class LinuxWindowActivity : ComponentActivity() {
        leavingToBackground = true
     }
 
-    /** Swiping the card away in Recents closes the Linux window, like closing an app. */
+      /** Swiping the card away in Recents closes the Linux window, like closing an app. */
     override fun onDestroy() {
         super.onDestroy()
         val w = window ?: return
         if (isFinishing && !leavingToBackground && w in runtime.wm.appWindows) {
-    runtime.wm.close(w)
-}
+            runtime.wm.close(w)
+        }
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
