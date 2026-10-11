@@ -58,6 +58,7 @@ import kotlinx.coroutines.flow.first
 class LinuxWindowActivity : ComponentActivity() {
     private val runtime get() = (application as App).runtime
     private var window: XdgToplevel? = null
+    private var leavingToBackground = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,11 +116,18 @@ class LinuxWindowActivity : ComponentActivity() {
         runtime.screenStopped()
     }
 
+    override fun onUserLeaveHint() {
+       super.onUserLeaveHint()
+       leavingToBackground = true
+    }
+
     /** Swiping the card away in Recents closes the Linux window, like closing an app. */
     override fun onDestroy() {
         super.onDestroy()
         val w = window ?: return
-        if (isFinishing && w in runtime.wm.appWindows) runtime.wm.close(w)
+        if (isFinishing && !leavingToBackground && w in runtime.wm.appWindows) {
+    runtime.wm.close(w)
+}
     }
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
