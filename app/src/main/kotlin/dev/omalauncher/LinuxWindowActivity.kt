@@ -119,7 +119,7 @@ class LinuxWindowActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         val w = window ?: return
-        if (isFinishing && !leavingToBackground && w in runtime.wm.appWindows) {
+        if (isFinishing && w in runtime.wm.appWindows) {
             runtime.wm.close(w)
         }
     }
